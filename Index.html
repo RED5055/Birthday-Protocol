@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Birthday Protocol v26.0</title>
+
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap');
+
+
+*{
+    box-sizing:border-box;
+}
+
+
+body{
+
+    margin:0;
+    height:100vh;
+    overflow:hidden;
+
+    background:
+    radial-gradient(circle at top,#24104f,#020205 65%);
+
+    color:#00ffcc;
+
+    font-family:'Orbitron',monospace;
+
+}
+
+
+/* Background particles */
+
+.particle{
+
+    position:absolute;
+
+    width:3px;
+    height:3px;
+
+    background:#00ffcc;
+
+    border-radius:50%;
+
+    opacity:.7;
+
+    animation:float 12s linear infinite;
+
+}
+
+
+@keyframes float{
+
+from{
+    transform:translateY(110vh);
+}
+
+to{
+    transform:translateY(-20vh);
+}
+
+}
+
+
+
+/* Main window */
+
+.container{
+
+    width:90%;
+    max-width:900px;
+
+    height:80vh;
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+
+    background:
+    rgba(5,5,15,.88);
+
+
+    border:1px solid #00ffcc;
+
+
+    box-shadow:
+
+    0 0 20px #00ffcc,
+    0 0 60px rgba(160,0,255,.5);
+
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    backdrop-filter:blur(12px);
+
+}
+
+
+
+/* Header */
+
+.header{
+
+    height:45px;
+
+    display:flex;
+
+    align-items:center;
+
+    padding-left:20px;
+
+    gap:10px;
+
+
+    background:
+    linear-gradient(
+    90deg,
+    #110022,
+    #001f2f
+    );
+
+}
+
+
+
+.dot{
+
+    width:12px;
+    height:12px;
+
+    border-radius:50%;
+
+}
+
+
+.red{
+background:#ff3b5c;
+}
+
+.yellow{
+background:#ffc400;
+}
+
+.green{
+background:#00ff88;
+}
+
+
+
+.title{
+
+    margin-left:15px;
+
+    color:white;
+
+    font-size:14px;
+
+}
+
+
+
+/* Terminal */
+
+
+.terminal{
+
+    padding:25px;
+
+    height:calc(100% - 45px);
+
+    overflow-y:auto;
+
+    font-size:15px;
+
+    line-height:1.7;
+
+    transition:opacity 1s ease;
+
+}
+
+
+
+.line{
+
+    margin-bottom:8px;
+
+}
+
+
+
+.cursor{
+
+    display:inline-block;
+
+    width:10px;
+
+    height:18px;
+
+    background:#00ffcc;
+
+    animation:blink 1s infinite;
+
+}
+
+
+
+@keyframes blink{
+
+50%{
+opacity:0;
+}
+
+}
+
+
+
+/* Loading */
+
+.loadingBox{
+
+    width:100%;
+
+    height:20px;
+
+    border:1px solid #00ffcc;
+
+    margin-top:20px;
+
+}
+
+
+.loading{
+
+    height:100%;
+
+    width:0%;
+
+    background:
+
+    linear-gradient(
+    90deg,
+    #00ffcc,
+    #a000ff
+    );
+
+
+    box-shadow:
+    0 0 15px #00ffcc;
+
+}
+
+
+
+/* Reveal Screen */
+
+.reveal{
+
+    display:none;
+
+    position:absolute;
+
+    top:45px;
+
+    left:0;
+
+    width:100%;
+
+    height:calc(100% - 45px);
+
+    text-align:center;
+
+    padding:50px 20px;
+
+    overflow-y:auto;
+
+}
+
+
+
+.big{
+
+    font-size:55px;
+
+    font-weight:800;
+
+    color:white;
+
+
+    text-shadow:
+
+    0 0 10px #00ffcc,
+    0 0 30px #a000ff;
+
+
+    animation:pulse 2s infinite;
+
+}
+
+
+
+@keyframes pulse{
+
+50%{
+
+transform:scale(1.05);
+
+}
+
+}
+
+
+
+/* Cards */
+
+
+.card{
+
+    margin:30px auto;
+
+    padding:25px;
+
+    width:80%;
+
+
+    border:1px solid #a000ff;
+
+
+    background:
+    rgba(0,0,0,.5);
+
+
+    box-shadow:
+
+    0 0 30px rgba(160,0,255,.5);
+
+}
+
+
+
+button{
+
+    margin-top:20px;
+
+    padding:15px 35px;
+
+
+    border:none;
+
+    border-radius:30px;
+
+
+    background:
+
+    linear-gradient(
+    90deg,
+    #00ffcc,
+    #a000ff
+    );
+
+
+    color:black;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+}
+
+
+button:hover{
+
+    box-shadow:
+
+    0 0 25px #00ffcc;
+
+}
+
+
+
+/* Final message animation */
+
+
+.final-message{
+
+    animation:
+    appear 1s ease forwards;
+
+}
+
+
+
+@keyframes appear{
+
+from{
+
+opacity:0;
+
+transform:translateY(40px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+
+
+
+@media(max-width:600px){
+
+
+.big{
+
+font-size:35px;
+
+}
+
+
+.terminal{
+
+font-size:12px;
+
+}
+
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<script>
+
+for(let i=0;i<80;i++){
+
+let p=document.createElement("div");
+
+p.className="particle";
+
+p.style.left=Math.random()*100+"%";
+
+p.style.animationDelay=Math.random()*10+"s";
+
+p.style.animationDuration=
+(8+Math.random()*12)+"s";
+
+
+document.body.appendChild(p);
+
+}
+
+</script>
+
+
+<div class="container">
+
+
+<div class="header">
+
+<div class="dot red"></div>
+<div class="dot yellow"></div>
+<div class="dot green"></div>
+
+
+<div class="title">
+
+Birthday Protocol // v26.0
+
+</div>
+
+
+</div>
+
+
+
+<!-- TERMINAL ONLY -->
+
+<div class="terminal" id="terminal">
+
+
+<div id="output"></div>
+
+
+<div class="loadingBox">
+
+<div class="loading" id="loading"></div>
+
+</div>
+
+
+</div>
+
+
+
+
+<!-- REVEAL IS OUTSIDE TERMINAL -->
+
+<div class="reveal" id="reveal">
+
+
+<div class="big">
+
+🎉<br>
+
+HAPPY BIRTHDAY
+
+<br>
+
+IHSANIYA
+
+<br>
+
+🎉
+
+</div>
+
+
+
+<div class="card">
+
+
+<h2>
+
+Birthday Update v26.0
+
+</h2>
+
+
+<p>
+
+
+NEW FEATURES:
+
+<br><br>
+
++ More laughter unlocked 😂
+
+<br>
+
++ Happiness engine upgraded ✨
+
+<br>
+
++ Adventure mode enabled 🚀
+
+<br>
+
++ Good vibes installed 💚
+
+
+<br><br>
+
+
+KNOWN ISSUES:
+
+<br><br>
+
+
+⚠ Still too funny
+
+<br>
+
+⚠ Still too chill
+
+<br>
+
+⚠ Impossible to debug
+
+
+</p>
+
+
+<button onclick="showMessage()">
+
+Open Final Message
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+<script>
+
+
+const output = document.getElementById("output");
+
+const loading = document.getElementById("loading");
+
+const reveal = document.getElementById("reveal");
+
+const terminal = document.getElementById("terminal");
+
+
+
+const commands = [
+
+
+"> Establishing secure connection...",
+
+
+"> Loading Birthday Protocol v26.0...",
+
+
+"> Connecting to Life Repository...",
+
+
+"> Searching user database...",
+
+
+"",
+
+
+"USER FOUND ✓",
+
+
+"",
+
+
+"Identity Scan:",
+
+
+"Name: Ihsaniya",
+
+
+"Age: 26",
+
+
+"Personality: Funny + Chill",
+
+
+"",
+
+
+"Running personality analysis...",
+
+
+"",
+
+
+"Humor Level: ██████████ 99%",
+
+
+"Chill Factor: ██████████ 100%",
+
+
+"Awesome Level: ERROR",
+
+
+"Reason: Value exceeds measurable limit.",
+
+
+"",
+
+
+"$ git pull birthday-update",
+
+
+"Fetching memories...",
+
+
+"Complete ✓",
+
+
+"",
+
+
+"$ npm install happiness",
+
+
+"Installing packages...",
+
+
+"",
+
+
+"✔ laughter",
+
+
+"✔ good vibes",
+
+
+"✔ adventures",
+
+
+"✔ cake.exe",
+
+
+"",
+
+
+"Deployment successful.",
+
+
+"",
+
+
+"SYSTEM OVERRIDE DETECTED",
+
+
+"",
+
+
+"CELEBRATION MODE ACTIVATED"
+
+
+];
+
+
+
+
+let index = 0;
+
+
+
+
+function typeLine(text, callback){
+
+
+let line = document.createElement("div");
+
+
+line.className="line";
+
+
+output.appendChild(line);
+
+
+
+let i=0;
+
+
+
+let interval=setInterval(()=>{
+
+
+line.innerHTML =
+text.substring(0,i)
++
+'<span class="cursor"></span>';
+
+
+
+terminal.scrollTop =
+terminal.scrollHeight;
+
+
+
+i++;
+
+
+
+if(i > text.length){
+
+
+clearInterval(interval);
+
+
+line.innerHTML=text;
+
+
+setTimeout(callback,350);
+
+
+}
+
+
+},35);
+
+
+
+}
+
+
+
+
+
+function runTerminal(){
+
+
+if(index < commands.length){
+
+
+typeLine(commands[index],()=>{
+
+
+index++;
+
+
+runTerminal();
+
+
+});
+
+
+}
+
+else{
+
+
+startLoading();
+
+
+}
+
+
+}
+
+
+
+
+
+function startLoading(){
+
+
+let progress=0;
+
+
+
+let interval=setInterval(()=>{
+
+
+progress++;
+
+
+loading.style.width =
+progress+"%";
+
+
+
+if(progress>=100){
+
+
+clearInterval(interval);
+
+
+
+setTimeout(()=>{
+
+
+glitch();
+
+
+},800);
+
+
+
+}
+
+
+},35);
+
+
+}
+
+
+
+
+
+function glitch(){
+
+
+document.body.style.filter =
+"contrast(220%) brightness(160%)";
+
+
+
+setTimeout(()=>{
+
+
+document.body.style.filter="";
+
+
+
+terminal.style.display="none";
+
+
+
+reveal.style.display="block";
+
+
+
+celebrate();
+
+
+
+},350);
+
+
+
+}
+
+
+
+
+
+function celebrate(){
+
+
+let duration=4000;
+
+
+let end=Date.now()+duration;
+
+
+
+(function frame(){
+
+
+
+confetti({
+
+particleCount:5,
+
+angle:60,
+
+spread:70,
+
+origin:{x:0}
+
+});
+
+
+
+confetti({
+
+particleCount:5,
+
+angle:120,
+
+spread:70,
+
+origin:{x:1}
+
+});
+
+
+
+
+if(Date.now()<end){
+
+
+requestAnimationFrame(frame);
+
+
+}
+
+
+
+})();
+
+
+
+}
+
+
+
+
+setTimeout(()=>{
+
+
+runTerminal();
+
+
+},1000);
+
+
+
+</script>
+
+<script>
+
+
+function showMessage(){
+
+
+const messageBox = document.createElement("div");
+
+
+messageBox.className =
+"card final-message";
+
+
+
+messageBox.innerHTML = `
+
+
+<div class="big">
+
+❤️
+
+</div>
+
+
+
+<h2>
+
+FINAL SYSTEM MESSAGE
+
+</h2>
+
+
+
+<p>
+
+
+Some people don't just exist in your life...
+
+<br><br>
+
+
+They make ordinary moments better.
+
+<br><br>
+
+
+You are one of those people.
+
+<br><br>
+
+
+
+System Scan Complete:
+
+<br><br>
+
+
+✓ Funny
+
+<br>
+
+✓ Chill
+
+<br>
+
+✓ Awesome
+
+
+<br><br>
+
+
+Keep being the amazing person you are.
+
+<br><br>
+
+
+Happy Birthday, Ihsaniya ❤️
+
+
+</p>
+
+
+`;
+
+
+
+reveal.appendChild(messageBox);
+
+
+
+messageBox.scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+
+}
+
+
+
+
+</script>
+
+
+</body>
+
+</html>
